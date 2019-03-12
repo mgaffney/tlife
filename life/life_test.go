@@ -34,6 +34,46 @@ func TestNew(t *testing.T) {
 	}
 }
 
+func TestResize(t *testing.T) {
+	type gs struct {
+		w, h int
+	}
+	var tests = []struct {
+		a, b gs
+	}{
+		{gs{0, 0}, gs{10, 10}},
+		{gs{10, 10}, gs{0, 0}},
+		{gs{5, 5}, gs{10, 10}},
+		{gs{10, 10}, gs{5, 5}},
+	}
+	for _, tt := range tests {
+		tt := tt
+		t.Run(fmt.Sprintf("%dx%d=>%dx%d", tt.a.w, tt.a.h, tt.b.w, tt.b.h), func(t *testing.T) {
+			ga := New(tt.a.w, tt.a.h)
+			for y := 0; y < tt.a.h; y++ {
+				for x := 0; x < tt.a.w; x++ {
+					ga.Toggle(x, y)
+				}
+			}
+			t.Log(ga)
+			gb := ga.Resize(tt.b.w, tt.b.h)
+
+			gbw, gbh := gb.Size()
+			if gbw != tt.b.w || gbh != tt.b.h {
+				t.Errorf("expected w: %d h: %d, got w: %d h:%d", tt.b.w, tt.b.h, gbw, gbw)
+			}
+			t.Log(gb)
+			for y := 0; y < tt.b.h; y++ {
+				for x := 0; x < tt.b.w; x++ {
+					if got, want := gb.Cell(x, y), ga.Cell(x, y); got != want {
+						t.Errorf("cell(%d,%d): expected %v, got %v", x, y, want, got)
+					}
+				}
+			}
+		})
+	}
+}
+
 func TestSetCell(t *testing.T) {
 	w, h := 10, 100
 	g := New(w, h)

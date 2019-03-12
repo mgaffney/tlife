@@ -65,7 +65,9 @@ mainloop:
 				mx, my = ev.MouseX, ev.MouseY
 				g.Toggle(mx, my)
 			}
+		case termbox.EventResize:
 		}
+		g = g.Resize(termbox.Size())
 		draw(g)
 	}
 }

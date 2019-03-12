@@ -22,4 +22,3 @@ In a terminal, run `tlife`.
 - Space key starts/stops automatic evolution
 - '+' key increases speed
 - '-' key decreases speed
-- Support resizing of terminal

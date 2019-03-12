@@ -42,7 +42,13 @@ func (g *Grid) Size() (width, height int) {
 // Resize returns a new grid of width and height with an initial state
 // based on g.
 func (g *Grid) Resize(width, height int) *Grid {
-	return nil
+	b := New(width, height)
+	for y := 0; y < g.h; y++ {
+		for x := 0; x < g.w; x++ {
+			b.Set(x, y, g.Cell(x, y))
+		}
+	}
+	return b
 }
 
 // Cell returns the cell at x,y.
